@@ -19,7 +19,7 @@ type Store struct {
 	indexesLock sync.RWMutex
 }
 
-// NewStore initialize a new store using the specified engine & path, supported engines are (`badgerdb`, `leveldb`, `scorch`, `boltdb`)
+// NewStore initialize a new store using the specified engine & path, supported engines are (`leveldb`, `scorch`, `boltdb`)
 func NewStore(engine, path string) (*Store, error) {
 	s := new(Store)
 	s.engine = strings.ToLower(engine)
@@ -70,8 +70,6 @@ func (s *Store) InitIndex(name string) (ndx *Index, err error) {
 		ndx, err = initBoltIndex(indexPath, indexMapping)
 	case "leveldb":
 		ndx, err = initLevelIndex(indexPath, indexMapping)
-	case "badgerdb", "rocksdb":
-		ndx, err = initBadgerIndex(indexPath, indexMapping)
 	case "scorch":
 		ndx, err = initScorchIndex(indexPath, indexMapping)
 	default:

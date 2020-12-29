@@ -1,7 +1,6 @@
 package srchx
 
 import (
-	"github.com/abasse/bbadger"
 	"github.com/blevesearch/bleve"
 	"github.com/blevesearch/bleve/index/scorch"
 	"github.com/blevesearch/bleve/index/store/boltdb"
@@ -28,12 +27,6 @@ func initLevelIndex(path string, mapping mapping.IndexMapping) (*Index, error) {
 	if err != nil && err == bleve.ErrorIndexPathExists {
 		ndx, err = bleve.Open(path)
 	}
-	return NewIndex(ndx), err
-}
-
-// create/open a new badgerdb based index
-func initBadgerIndex(path string, mapping mapping.IndexMapping) (*Index, error) {
-	ndx, err := bbadger.BleveIndex(path, mapping)
 	return NewIndex(ndx), err
 }
 
