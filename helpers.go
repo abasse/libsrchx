@@ -6,8 +6,9 @@ import (
 	"github.com/blevesearch/bleve/index/scorch"
 	"github.com/blevesearch/bleve/index/store/boltdb"
 	"github.com/blevesearch/bleve/index/store/goleveldb"
+	"github.com/blevesearch/bleve/index/upsidedown"
 	"github.com/blevesearch/bleve/mapping"
-	"github.com/wrble/flock/index/upsidedown"
+	//"github.com/wrble/flock/index/upsidedown"
 )
 
 // create/open a new boltdb based index
