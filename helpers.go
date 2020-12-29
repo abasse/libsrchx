@@ -1,7 +1,7 @@
 package srchx
 
 import (
-	"github.com/alash3al/bbadger"
+	"github.com/abasse/bbadger"
 	"github.com/blevesearch/bleve"
 	"github.com/blevesearch/bleve/index/scorch"
 	"github.com/blevesearch/bleve/index/store/boltdb"
