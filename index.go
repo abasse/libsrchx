@@ -197,17 +197,17 @@ func (i *Index) applyJOIN(res *SearchResult, q *Query) {
 
 			if join.Where.Query != nil {
 				join.Where.Query = bleve.NewConjunctionQuery(join.Where.Query, bleve.NewDocIDQuery([]string{doc[join.On].(string)}))
-			} else {
-				fmt.Printf(" ::Join on: %s ", []string{doc[join.On].(string)})
-				join.Where.Query = bleve.NewDocIDQuery([]string{doc[join.On].(string)})
 				fmt.Printf(" ::join where query: %s ", join.Where.Query)
+			} else {
+				join.Where.Query = bleve.NewDocIDQuery([]string{doc[join.On].(string)})
 			}
 
 			sub, _ := i.Search(join.Where)
-			fmt.Printf(" ::Sub: %s ", sub)
+
 			delete(doc, join.On)
 
 			doc[join.As] = sub.Docs
+			fmt.Printf(" ::doc: %s ", doc)
 			res.Docs[x] = doc
 		}
 	}
