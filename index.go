@@ -134,12 +134,9 @@ func (i *Index) Aggregate(q *Query, field, fn string) (result float64) {
 // Search - search in the index for the specified query
 func (i *Index) Search(q *Query) (*SearchResult, error) {
 
-	fmt.Println("Starting query...")
-
 	if q.Size < 1 {
 		q.Size = 10
 	}
-	fmt.Println("Query ")
 	searchRequest := bleve.NewSearchRequest(q.Query)
 	searchRequest.Fields = []string{"*"}
 	searchRequest.IncludeLocations = true
@@ -195,19 +192,19 @@ func (i *Index) applyJOIN(res *SearchResult, q *Query) {
 				continue
 			}
 
-			fmt.Printf("Join on: %s ", []string{doc[join.On].(string)})
-
 			join.Where.Query = bleve.NewDocIDQuery([]string{doc[join.On].(string)})
 			join.Where.Join = q.Join
 
 			if join.Where.Query != nil {
 				join.Where.Query = bleve.NewConjunctionQuery(join.Where.Query, bleve.NewDocIDQuery([]string{doc[join.On].(string)}))
 			} else {
+				fmt.Printf(" ::Join on: %s ", []string{doc[join.On].(string)})
 				join.Where.Query = bleve.NewDocIDQuery([]string{doc[join.On].(string)})
+				fmt.Printf(" ::join where query: %s ", join.Where.Query)
 			}
 
 			sub, _ := i.Search(join.Where)
-
+			fmt.Printf(" ::Sub: %s ", sub)
 			delete(doc, join.On)
 
 			doc[join.As] = sub.Docs
