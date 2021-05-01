@@ -2,7 +2,6 @@ package srchx
 
 import (
 	"errors"
-	"fmt"
 	"math"
 	"strings"
 	"time"
@@ -174,8 +173,6 @@ func (i *Index) Search(q *Query) (*SearchResult, error) {
 // ApplyJOIN - apply joins on the specified search result
 func (i *Index) applyJOIN(res *SearchResult, q *Query) {
 
-	fmt.Println("Executing Join")
-
 	if len(q.Join) < 1 {
 		return
 	}
@@ -197,17 +194,21 @@ func (i *Index) applyJOIN(res *SearchResult, q *Query) {
 
 			if join.Where.Query != nil {
 				join.Where.Query = bleve.NewConjunctionQuery(join.Where.Query, bleve.NewDocIDQuery([]string{doc[join.On].(string)}))
-				fmt.Printf(" ::join where query: %s ", join.Where.Query)
+
 			} else {
 				join.Where.Query = bleve.NewDocIDQuery([]string{doc[join.On].(string)})
 			}
 
-			sub, _ := i.Search(join.Where)
+			// sub, _ := join.Src.Search(&Query{
+			// 	Query: query.Query(bleve.NewDocIDQuery([]string{doc[join.On].(string)})),
+			// })
+
+			sub, _ := join.Src.Search(join.Where)
 
 			delete(doc, join.On)
 
 			doc[join.As] = sub.Docs
-			fmt.Printf(" ::doc: %s ", doc)
+
 			res.Docs[x] = doc
 		}
 	}
